@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-15T16:44:02.519Z",
+  "node": "v24.19.0",
+  "database": "pglite",
+  "status": "passed",
+  "checks": [
+    "Real server entry point connects the persistent database and seeds demo users",
+    "Production React HTML is served by the API server",
+    "Swagger and OpenAPI are accessible",
+    "The real entry point accepts the local 127.0.0.1 frontend origin",
+    "Authenticated route creation writes SQL data",
+    "CLIENT_ORIGIN is loaded from the environment and normalizes comma-separated origins with trailing slashes",
+    "The same route survives a complete server process restart",
+    "Cleanup through the actual API succeeds"
+  ]
+}

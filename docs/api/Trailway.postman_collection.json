@@ -1,0 +1,624 @@
+{
+  "info": {
+    "name": "Trailway Labs 8–10",
+    "description": "Запустіть npm start, імпортуйте колекцію та виконуйте запити по порядку. Postman зберігає HttpOnly cookie у cookie jar; access_token, UUID і version передаються автоматично. Колекція створює власний маршрут і видаляє його; завершена подорож лишається в історії.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3001/api"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "route_id",
+      "value": ""
+    },
+    {
+      "key": "route_version",
+      "value": "1"
+    },
+    {
+      "key": "trip_id",
+      "value": ""
+    },
+    {
+      "key": "share_id",
+      "value": ""
+    },
+    {
+      "key": "share_token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Стан API",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [],
+        "url": "{{base_url}}/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Вхід туриста",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"oleh@example.com\",\n  \"password\": \"Tourist2026!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "if (pm.response.code < 300) { const data = pm.response.json();",
+              "pm.collectionVariables.set(\"access_token\", data.access_token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Поточний користувач",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/auth/me"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Каталог",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [],
+        "url": "{{base_url}}/places?limit=10&offset=0"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Створити маршрут",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/routes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Перевірка REST API\",\n  \"description\": \"Маршрут із колекції Postman\",\n  \"state\": \"ready\",\n  \"points\": [\n    {\n      \"label_snapshot\": \"Міське озеро\",\n      \"latitude\": 48.91412,\n      \"longitude\": 24.68918\n    },\n    {\n      \"label_snapshot\": \"Парк Шевченка\",\n      \"latitude\": 48.91194,\n      \"longitude\": 24.69895\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "if (pm.response.code < 300) { const data = pm.response.json();",
+              "pm.collectionVariables.set(\"route_id\", data.id);",
+              "pm.collectionVariables.set(\"route_version\", data.version);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Прочитати маршрут",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/routes/{{route_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Оновити маршрут",
+      "request": {
+        "method": "PUT",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/routes/{{route_id}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Оновлений маршрут REST API\",\n  \"description\": \"Маршрут із колекції Postman\",\n  \"state\": \"ready\",\n  \"points\": [\n    {\n      \"label_snapshot\": \"Міське озеро\",\n      \"latitude\": 48.91412,\n      \"longitude\": 24.68918\n    },\n    {\n      \"label_snapshot\": \"Парк Шевченка\",\n      \"latitude\": 48.91194,\n      \"longitude\": 24.69895\n    }\n  ],\n  \"base_version\": {{route_version}}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "if (pm.response.code < 300) { const data = pm.response.json();",
+              "pm.collectionVariables.set(\"route_version\", data.version);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Поширити маршрут",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/routes/{{route_id}}/shares"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "if (pm.response.code < 300) { const data = pm.response.json();",
+              "pm.collectionVariables.set(\"share_id\", data.id);",
+              "pm.collectionVariables.set(\"share_token\", data.token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Анонімний перегляд",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [],
+        "url": "{{base_url}}/shares/{{share_token}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Почати подорож",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/trips",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"route_id\": \"{{route_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "if (pm.response.code < 300) { const data = pm.response.json();",
+              "pm.collectionVariables.set(\"trip_id\", data.id);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Пауза",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/trips/{{trip_id}}/pause"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Продовження",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/trips/{{trip_id}}/resume"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Завершення",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/trips/{{trip_id}}/finish"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Історія подорожей",
+      "request": {
+        "method": "GET",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/trips?limit=10&offset=0"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Відкликати посилання",
+      "request": {
+        "method": "DELETE",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/routes/{{route_id}}/shares/{{share_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Видалити маршрут",
+      "request": {
+        "method": "DELETE",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/routes/{{route_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Повторне видалення",
+      "request": {
+        "method": "DELETE",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "header": [],
+        "url": "{{base_url}}/routes/{{route_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Оновлення сесії через cookie",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [],
+        "url": "{{base_url}}/auth/refresh"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "if (pm.response.code < 300) { const data = pm.response.json();",
+              "pm.collectionVariables.set(\"access_token\", data.access_token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Вихід",
+      "request": {
+        "method": "POST",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [],
+        "url": "{{base_url}}/auth/logout"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

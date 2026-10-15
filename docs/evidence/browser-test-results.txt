@@ -1,0 +1,16 @@
+PASS: Desktop login, catalogue and seeded routes
+PASS: Keyboard focus, Escape cancellation and ready-route validation with one point
+PASS: Mobile layout at 390 px has no horizontal overflow or hero text overlap
+PASS: Mobile navigation opens the catalogue and identifies the current screen
+PASS: Create and edit a route through the UI and real API
+PASS: Anonymous sharing and revocation
+PASS: Browser geolocation fixture, pause, resume and finish
+PASS: Offline save, reload from service worker and synchronization without duplicates
+PASS: Delete route through UI
+PASS: Conflict blocks later changes of the same route until explicit resolution
+PASS: Guest draft import on registration and private data isolation on logout
+PASS: A delayed private route response cannot repopulate the guest UI after logout
+PASS: Switching shared links ignores an older response and keeps the requested route
+PASS: Admin UI writes catalogue records to PostgreSQL
+PASS: Swagger UI loads OpenAPI and executes the health request against the real API
+PASS: No browser JavaScript errors

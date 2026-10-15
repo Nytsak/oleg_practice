@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-15T16:45:05.906Z",
+  "browser": "153.0.8010.0",
+  "node": "v24.19.0",
+  "checks": [
+    "Desktop login, catalogue and seeded routes",
+    "Keyboard focus, Escape cancellation and ready-route validation with one point",
+    "Mobile layout at 390 px has no horizontal overflow or hero text overlap",
+    "Mobile navigation opens the catalogue and identifies the current screen",
+    "Create and edit a route through the UI and real API",
+    "Anonymous sharing and revocation",
+    "Browser geolocation fixture, pause, resume and finish",
+    "Offline save, reload from service worker and synchronization without duplicates",
+    "Delete route through UI",
+    "Conflict blocks later changes of the same route until explicit resolution",
+    "Guest draft import on registration and private data isolation on logout",
+    "A delayed private route response cannot repopulate the guest UI after logout",
+    "Switching shared links ignores an older response and keeps the requested route",
+    "Admin UI writes catalogue records to PostgreSQL",
+    "Swagger UI loads OpenAPI and executes the health request against the real API",
+    "No browser JavaScript errors"
+  ],
+  "errors": [],
+  "viewport": {
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ]
+  },
+  "geolocation": "browser test fixture"
+}

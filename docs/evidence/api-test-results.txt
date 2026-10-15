@@ -1,0 +1,100 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> trailway-fullstack-labs@1.0.0 verify
+> npm run export:api && npm run check && npm test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> trailway-fullstack-labs@1.0.0 export:api
+> node scripts/export-api.js
+
+Exported OpenAPI and 19 Postman requests to docs/api.
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> trailway-fullstack-labs@1.0.0 check
+> node scripts/check.js
+
+JavaScript syntax OK. JSX is checked by Vite build.
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> trailway-fullstack-labs@1.0.0 test
+> node --test --test-concurrency=1 tests/api.test.js tests/client-api.test.js tests/persistence.test.js tests/http-contract.test.js tests/postman.test.js tests/lab5-compat.test.js
+
+✔ Health and all nine Lab 5 tables exist (1724.144053ms)
+✔ Private routes require authentication (4.863105ms)
+✔ Registration hashes password and prevents role escalation (122.702127ms)
+✔ Invalid email and short password return 400 (3.790349ms)
+✔ Incorrect credentials return 401 (52.146086ms)
+✔ Refresh token rotates and logout revokes it (82.33365ms)
+✔ Expired or modified JWT is rejected (5.290146ms)
+✔ Route CRUD stores ordered points and estimates (38.431835ms)
+✔ PATCH preserves route points (36.351221ms)
+✔ Foreign owner cannot read, update or delete routes (37.112216ms)
+✔ Stale version returns 409 and keeps server data (44.957295ms)
+✔ Invalid coordinates are rejected atomically (16.5969ms)
+✔ Invalid catalogue reference rolls back route and points (19.420553ms)
+✔ Missing base version and malformed UUID return 400 (29.258939ms)
+✔ Route filter, sorting and limit offset pagination work (33.639188ms)
+✔ SQL injection stays a parameter value (27.753851ms)
+✔ DELETE is idempotent and preserves historical snapshot (62.515325ms)
+✔ Tourist cannot manage catalogue (3.315536ms)
+✔ Admin catalogue CRUD keeps route point snapshots after deletion (40.588098ms)
+✔ Sharing hashes token, allows anonymous access, supports revocation (41.063124ms)
+✔ Expired sharing link is rejected (21.402739ms)
+✔ Offline create replay applies only once (36.897906ms)
+✔ Same operation UUID cannot carry different payload (22.703033ms)
+✔ Offline stale update is logged as conflict (38.346042ms)
+✔ Failed sync rolls back mutation while recording failure (14.764287ms)
+✔ Trip state machine, uniqueness, tracking and segment gaps (104.248166ms)
+✔ HTTP errors have consistent format and reject cross origin requests (10.303596ms)
+✔ OpenAPI describes all operations and bearer authorization (4.365976ms)
+✔ Authentication rate limiting returns 429 (126.168641ms)
+✔ Malformed route point objects return 400 without a partial write (20.309559ms)
+✔ Invalid sync envelope is rejected before earlier operations mutate data (22.015143ms)
+✔ Sync replay accepts reordered JSON keys but rejects changed values (29.67233ms)
+✔ Malformed GPS batch rolls back earlier valid measurements (34.04548ms)
+✔ Concurrent 401 responses share one refresh and retry with the new token (14.294762ms)
+✔ A route response arriving after logout cannot return private data (1.41803ms)
+✔ Login waits for an older refresh and its response cannot overwrite the new session (1.725644ms)
+✔ Private API responses and errors have no-store and request correlation (3367.988608ms)
+✔ Refresh cookie uses the mounted auth API path and rotates (20.149199ms)
+✔ Non-JSON and oversized bodies return safe 415 and 413 JSON errors (18.197801ms)
+✔ Sync conflicts do not expose SQL or constraint names and replay safely (34.686206ms)
+{"event":"api_error","requestId":"26686921-2cae-4091-bb9d-19c16e20cfc9","code":"internal_error"}
+✔ Unexpected database errors return a safe JSON 500 (8.900686ms)
+✔ Request logs use route templates and exclude bodies and capability tokens (33.054488ms)
+✔ Local loopback browser origins support login, registration, refresh and logout (342.15102ms)
+✔ Configured client origins support a comma-separated list and a trailing slash (137.64519ms)
+✔ Hostile, opaque and malformed origins stay blocked before authentication (35.399448ms)
+✔ Production permits same-origin and configured origins without implicit local development access (15.962001ms)
+✔ Invalid client-origin configuration fails with a clear startup error (1.149751ms)
+✔ Actual setup upgrades the Lab 5 database, preserves every original business row and restores login (5198.374321ms)
+✔ Existing account IDs, names, roles and real passwords are preserved (1275.686933ms)
+✔ A preferred demo UUID occupied by another account never changes that account or its ownership (1102.03676ms)
+✔ Categories are resolved by code when an existing database uses different numeric IDs (1182.986893ms)
+✔ Fresh setup is idempotent and placeholder migration is limited to the two known demo accounts (1135.978066ms)
+✔ A failed setup rolls back placeholder updates and all new demo records (1036.886279ms)
+✔ Embedded PostgreSQL persists data and migrations across restart (2795.177557ms)
+✔ All 19 exported Postman requests run in order against the actual API (2442.33597ms)
+ℹ tests 55
+ℹ suites 0
+ℹ pass 55
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24712.937033
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> trailway-fullstack-labs@1.0.0 build
+> vite build --config client/vite.config.js && node scripts/stamp-sw.js
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 42 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.71 kB │ gzip:   0.48 kB
+dist/assets/index-C7ha-nzD.css   37.50 kB │ gzip:  11.77 kB
+dist/assets/index-CGzGwlIf.js   392.46 kB │ gzip: 119.79 kB
+✓ built in 2.50s

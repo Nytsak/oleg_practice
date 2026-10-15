@@ -1,0 +1,7 @@
+node_modules/
+data/
+.env
+client/dist/
+test-results/
+*.log
+*.git.bundle

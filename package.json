@@ -1,0 +1,35 @@
+{
+ "name": "trailway-fullstack-labs",
+ "version": "1.0.0",
+ "private": true,
+ "type": "module",
+ "description": "Лабораторні 6–7 та 8–10 — туристичні маршрути з геолокацією",
+ "engines": {
+  "node": ">=22.13.0"
+ },
+ "scripts": {
+  "setup": "node server/src/setup.js",
+  "dev": "node scripts/dev.js",
+  "dev:client": "vite --config client/vite.config.js",
+  "dev:server": "node --watch server/src/index.js",
+  "build": "vite build --config client/vite.config.js && node scripts/stamp-sw.js",
+  "start": "node server/src/index.js",
+  "test": "node --test --test-concurrency=1 tests/api.test.js tests/client-api.test.js tests/persistence.test.js tests/http-contract.test.js tests/postman.test.js tests/lab5-compat.test.js",
+  "export:api": "node scripts/export-api.js",
+  "smoke:launch": "node scripts/smoke-launch.js",
+  "check": "node scripts/check.js",
+  "verify": "npm run export:api && npm run check && npm test && npm run build"
+ },
+ "dependencies": {
+  "@electric-sql/pglite": "0.3.10",
+  "express": "5.1.0",
+  "leaflet": "1.9.4",
+  "pg": "8.16.3",
+  "react": "19.1.1",
+  "react-dom": "19.1.1",
+  "swagger-ui-dist": "5.29.0"
+ },
+ "devDependencies": {
+  "vite": "7.3.7"
+ }
+}

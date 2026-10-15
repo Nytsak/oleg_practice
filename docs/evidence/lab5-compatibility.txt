@@ -1,0 +1,14 @@
+✔ Actual setup upgrades the Lab 5 database, preserves every original business row and restores login (5846.352607ms)
+✔ Existing account IDs, names, roles and real passwords are preserved (1239.398122ms)
+✔ A preferred demo UUID occupied by another account never changes that account or its ownership (1158.111777ms)
+✔ Categories are resolved by code when an existing database uses different numeric IDs (1243.213766ms)
+✔ Fresh setup is idempotent and placeholder migration is limited to the two known demo accounts (1341.671746ms)
+✔ A failed setup rolls back placeholder updates and all new demo records (1032.622368ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12311.881797
